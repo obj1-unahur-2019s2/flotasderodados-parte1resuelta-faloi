@@ -6,28 +6,53 @@ import dependencias.*
 
 describe "Flota de rodados" {
 	const cachito = new ChevroletCorsa(color = rojo) 
-	const pedido = new Pedido(
+	const pedidoDe4 = new Pedido(
 		distanciaARecorrer = 960, 
 		tiempoMaximo = 8, 
 		cantidadPasajeros = 4, 
 		coloresIncompatibles = #{azul, negro}
 	)
+	const pedidoDe2 = new Pedido(
+		distanciaARecorrer = 800, 
+		tiempoMaximo = 4, 
+		cantidadPasajeros = 3, 
+		coloresIncompatibles = #{verde, negro}		
+	)
+	
+	const cultura = new Dependencia(
+		pedidos = [pedidoDe2, pedidoDe4], 
+		cantidadDeEmpleados = 2,
+		flota = [cachito, new RenaultKwid()]
+	)
 	
 	test "velocidad requerida" {
-		assert.equals(120, pedido.velocidadRequerida())
+		assert.equals(120, pedidoDe4.velocidadRequerida())
 	}
 	
 	test "cachito puede satisfacer" {
-		assert.that(pedido.puedeSerSatisfecho(cachito))
+		assert.that(pedidoDe4.puedeSerSatisfecho(cachito))
 	}
 	
 	test "cachito no puede satisfacer si se agrega el rojo" {
-		pedido.coloresIncompatibles().add(rojo)
-		assert.notThat(pedido.puedeSerSatisfecho(cachito))
+		pedidoDe4.coloresIncompatibles().add(rojo)
+		assert.notThat(pedidoDe4.puedeSerSatisfecho(cachito))
 	}
 	
 	test "cachito no puede satisfacer si acelero dos veces" {
-		2.times { i => pedido.acelerar() }
-		assert.notThat(pedido.puedeSerSatisfecho(cachito))
+		2.times { i => pedidoDe4.acelerar() }
+		assert.notThat(pedidoDe4.puedeSerSatisfecho(cachito))
+	}
+	
+	test "total de pasajeros de dependencia" {
+		assert.equals(7, cultura.totalPasajeros())
+	}
+	
+	test "es incompatible para todos" {
+		assert.that(cultura.esIncompatibleParaTodos(negro))
+		assert.notThat(cultura.esIncompatibleParaTodos(verde))
+	}
+	
+	test "pedidos sin satisfacer" {
+		assert.equals([pedidoDe2], cultura.pedidosSinSatisfacer())
 	}
 }

@@ -22,7 +22,11 @@ class Pedido {
 	
 	method satisfaceColor(auto) {
 //		return not coloresIncompatibles.any { c => c == auto.color() }
-		return not coloresIncompatibles.contains(auto.color())
+		return not self.esColorIncompatible(auto.color())
+	}
+	
+	method esColorIncompatible(color) {
+		return coloresIncompatibles.contains(color)
 	}
 	
 	method acelerar() {

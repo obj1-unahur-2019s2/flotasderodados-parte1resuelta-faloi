@@ -20,7 +20,7 @@ class ChevroletCorsa {
 
 class RenaultKwid {
 	// poniendo var property, permitimos poner y sacar el tanque
-	var property tieneTanqueAdicional
+	var property tieneTanqueAdicional = false
 	method capacidad() { 
     	if (tieneTanqueAdicional) {
 			return 3
